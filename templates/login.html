@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//apis.google.com/js/platform.js?onload=start"></script>
+</head>
+<body>
+<div id="signInButton">
+          <span class="g-signin"
+                data-scope="openid email"
+                data-clientid="583927106360-dpcnuhmt3clog8rj49gkeamo6vkek3pq.apps.googleusercontent.com "
+                data-redirecturi="postmessage"
+                data-accesstype="offline"
+                data-cookiepolicy="single_host_origin"
+                data-callback="signInCallback"
+                data-approvalprompt="force">
+          </span>
+</div>
+<div id="result"></div>
+
+<script>
+    function signInCallback(authResult) {
+        if (authResult['code']) {
+            $('#signInButton').css('display', 'none');
+
+            $.ajax({
+                type: 'POST',
+                url: '/gconnect?state={{ STATE }}',
+                contentType: 'application/octet-stream; charset=utf-8',
+                data: authResult['code'],
+                success: function (data) {
+                    if (data) {
+                        $('#result').html('Login successful!</br>' + data + '</br>Redirecting...');
+
+                        setTimeout(function () {
+                            window.location.href='/restaurant';
+                        }, 3000);
+
+                    } else if (authResult['error']) {
+                        console.log('There was an error: ', authResult['error']);
+                    } else {
+                        $('#result').text('Failed to make a server side call. Check your configuration and console')
+                    }
+                }
+            })
+        }
+    }
+</script>
+
+</body>
+</html>

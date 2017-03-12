@@ -1,9 +1,12 @@
 from flask import Flask, render_template, request, redirect,jsonify, url_for, flash
+from flask import session as login_session
+
 app = Flask(__name__)
 
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Restaurant, MenuItem
+import string, random
 
 
 #Connect to Database and create database session
@@ -137,7 +140,11 @@ def deleteMenuItem(restaurant_id,menu_id):
         return render_template('deleteMenuItem.html', item = itemToDelete)
 
 
-
+@app.route('/login')
+def showLogin():
+    state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(32))
+    login_session['state'] = state
+    return render_template('login.html')
 
 if __name__ == '__main__':
   app.secret_key = 'super_secret_key'
