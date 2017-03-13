@@ -30,11 +30,12 @@
                 data: authResult['code'],
                 success: function (data) {
                     if (data) {
-                        $('#result').html('Login successful!</br>' + data + '</br>Redirecting...');
+                        $('#result').html('<div style="margin: 40px auto; width: 600px; text-align: center">' +
+                            'Login successful!</br>' + data + '</br>Redirecting...</div>');
 
                         setTimeout(function () {
                             window.location.href='/restaurant';
-                        }, 3000);
+                        }, 4000);
 
                     } else if (authResult['error']) {
                         console.log('There was an error: ', authResult['error']);
