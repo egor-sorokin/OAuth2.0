@@ -28,7 +28,8 @@ class Restaurant(Base):
         """Return object data in easily serializeable format"""
         return {
             'name': self.name,
-            'id': self.id
+            'id': self.id,
+            'user_id': self.user_id
         }
 
 
